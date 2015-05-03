@@ -1,0 +1,27 @@
+body{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+  background-repeat: no-repeat;
+}
+
+.meta {
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+
+#bottone {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  bottom:10;
+  right: 10;
+}
