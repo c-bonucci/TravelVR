@@ -15,9 +15,6 @@ function displayLocation(latitude,longitude)
       document.getElementById('posizione').innerHTML = address.formatted_address;
     }
   };
-  request.timeout = 1000;
-  request.ontimeout = function () { window.alert("PALO");}
-  request.send();
 };
 
 var successCallback = function(position){
