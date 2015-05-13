@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+    </style>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaBuiZrzKlByUgeLHQvxCicfHHMZT6dxQ">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapProp = {
+          center:new google.maps.LatLng(43.7393153,11.027098299999999),
+          zoom:10,
+          mapTypeId:google.maps.MapTypeId.ROADMAP
+        };
+        var map=new google.maps.Map(document.getElementById("map-canvas"),mapProp);
+
+        var image = {
+          url: 'card.png',
+          size: new google.maps.Size(50, 50),
+          origin: new google.maps.Point(0,0),
+          anchor: new google.maps.Point(0, 32)
+        };
+
+        var infowindow = new google.maps.InfoWindow({
+          content: '<img src="prova.jpg">',
+        });
+
+        var marker=new google.maps.Marker({
+          position:new google.maps.LatLng(43.7393153,11.027098299999999),
+          map:map,
+          icon : image,
+        });
+        //marker.setMap(map);
+
+        infowindow.open(map,marker);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>
