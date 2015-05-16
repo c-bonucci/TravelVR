@@ -7,6 +7,6 @@ This is my Exam project and it's still in develop.
 
 For now you can give it a try just opening the link above and clicking on the fullscreen button.
 
-http://www.travelvr.me/TravelVR/VR/vr.html
+http://www.travelvr.me/VR/vr.html
 
 Hope you'll enjoy it
