@@ -8,7 +8,7 @@ if (mysqli_connect_errno())
 $res = mysqli_query($con,"SELECT img FROM Immagini");
 
 while ($row = mysqli_fetch_assoc($res)) {
-  print_r ('<img src="http://www.travelvr.me/img/' . $row['img'] . '">');
+  print_r ('<img src="http://www.travelvr.me/VR/img/' . $row['img'] . '">');
 }
 
 mysqli_close($con);
