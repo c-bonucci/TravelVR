@@ -9,8 +9,8 @@ I used the three.js library to render Sperical Photos and make them turn at the 
 
 The idea is to have a map on the background where to put markers for user's photos. People can upload their photos to the application and via geolocalization i can get their position and get coordinates where to put the marker. Make spherical 360 photos is very simple: you can use professional cameras or just download the Google Fotocamera application that allows you to make them. Clicking a marker will redirect user to the VR view of that place or (if you don't have a VR viewer) to a normal spherical photo viewer.
 
-For now you can give it a try just opening the link above and clicking on the fullscreen button with your smartphone.
+For now you can give it a try just opening the link above with your smarthphone
 
-http://www.travelvr.me/VR/vr.html
+http://www.travelvr.me/web/index.php
 
 Hope you'll enjoy it
