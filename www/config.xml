@@ -12,6 +12,6 @@
   <author email="claudio.bonucci96@gmail.com">
     Bonucci Claudio
   </author>
-  <content src="web/index.php" />
+  <content src="index.html" />
   <access origin="*" />
 </widget>
