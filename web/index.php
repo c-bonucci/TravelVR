@@ -25,7 +25,7 @@
 
       //Marker icon 
       var image = {
-        url: 'card.png',
+        url: 'cardboard-marker.png',
         size: new google.maps.Size(50, 50),
         origin: new google.maps.Point(0,0),
         anchor: new google.maps.Point(25, 25)
@@ -57,9 +57,10 @@ if ($con->connect_error)
 else
 {
 
-  $res = $con->prepare("SELECT id, titolo, latitude, longitude, img FROM Immagini ");
+  $res = $con->prepare("SELECT id, titolo,tipologia, latitude, longitude, img 
+                        FROM Immagini ");
   $res->execute();
-  $res->bind_result($id,$titolo, $latitude, $longitude, $img);
+  $res->bind_result($id,$titolo,$tipologia, $latitude, $longitude, $img);
 
   while ($res->fetch()){
     echo "marker.push(new google.maps.Marker({
@@ -69,6 +70,7 @@ else
         id : ". $id .",
         titolo :'".$titolo."',
         img : '" . $img . "',
+        tipologia: '" .$tipologia ."',
       }));";
   }
 }
@@ -117,19 +119,21 @@ $con->close();
 
       //Click event on the map. Put a new marker (da mettere in pagina upload)
       google.maps.event.addListener(map, 'click', function(event) {
-        placeMarker(event.latLng);          
+        //placeMarker(event.latLng);
+        $("#footer").removeClass("visibile");
+
       });
 
       //Click event on markers
       marker.forEach(function(m){
         google.maps.event.addListener(m, 'click', function(event) {
-          //Materialize.toast(m.id, 4000);
-          var footer = document.getElementById("footer").setAttribute("style", "height: 75%; width:100%; position: absolute;left: 0;bottom: 0; background:white; transition:1s;");
-          document.getElementById("title").innerHTML = m.titolo;
-          document.getElementById("img").src="../VR/img/" + m.img;
+          $("#footer").addClass("visibile");
+          document.getElementById("titolo").innerHTML = m.titolo;
+          document.getElementById("tipologia").innerHTML = m.tipologia;
+          document.getElementById("img-vr").src="../VR/img/" + m.img;
           document.getElementById("link").href="../VR/vr2.php?id=" + m.id;
-          map.setZoom(8);
-          map.setCenter(marker.getPosition());
+          /*map.setZoom(8);
+          map.setCenter(m.getPosition());*/
         });
       })
 
@@ -140,13 +144,7 @@ $con->close();
       });
     }
 
-    function CloseFooter() {
-      document.getElementById("footer").setAttribute("style", "height: 0px; width:100%; position: absolute; left: 0; bottom: 0; background:white; transition:1s;");
-      document.getElementById("title").innerHTML = "";
-      document.getElementById("img").src="";
-      document.getElementById("link").href="";
-      document.getElementById("subfooter").setAttribute("style","height: 0px");
-    }
+
     //Geolocation function
     function UserPosition() {
       if(navigator.geolocation) {
@@ -163,19 +161,6 @@ $con->close();
   </script>
 
   <body>
-    <!-- Left Menù 
-<nav>
-<div class="nav-wrapper">
-<a href="#!" class="brand-logo">TravelVR</a>
-<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-<ul class="side-nav" id="mobile-demo">
-<li><a href="#">Inserisci img</a></li>
-<li><a href="#">Boh</a></li>
-<li><a href="#">Boh</a></li>
-<li><a href="#">Boh</a></li>
-</ul>
-</div>
-</nav>-->
     <!-- Places SearchBox  -->
     <input id="pac-input" class="controls" type="text" placeholder="Search Box">
     <!-- Map -->
@@ -183,16 +168,16 @@ $con->close();
     <!-- Geolocalization button -->
     <a id="geoloc" onclick="UserPosition()" class="btn-floating btn-large waves-effect waves-light indigo accent-3 z-depth-5"><i class="mdi-device-gps-fixed"></i></a>
     <!-- Info footer that appears clicking on map's markers -->
-    <div id="footer">
-      <div id="subfooter">
-        <i id="close" class="small mdi-navigation-close right-align" onclick="CloseFooter()"></i>
-        <h4 id="title"></h4>
-        <p id="title"></p>
+    <footer id="footer">
+      <div class="subfooter">
+        <img src="normal-marker.png">
+        <div class="info">
+          <h4 id="titolo"></h4>
+          <p id="tipologia"></p>
+        </div>    
       </div>
-      <a id="link"><img id = "img" style="width:100%; height:auto;"></a>
-    </div>
-
-    </form>
+      <a id="link"><img id="img-vr" class="img-vr"></a>
+    </footer>
 
   </body>
 </html>

@@ -1,32 +1,60 @@
 html, body, #map-canvas {
   height: 100%;
   margin: 0px;
-  padding: 0px
+  padding: 0px;
+  overflow: hidden;
 }
 
-
-#footer {
-  height: 0px; 
-  width:100%; 
-  position: absolute; 
-  left: 0; 
-  bottom: 0;
+h1, h2, h3, h4, h5, h6, p, a{
+    color: #fff;
+    font-family:sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-#subfooter {
-  height: 25%;
-  background-color: #4B8BF7;
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 75%;
+    background-color: #fff;
+    -webkit-transform: translatey(200%);
+    -ms-transform: translatey(200%); 
+    -o-transform: translatey(200%);
+    transform: translatey(200%);
+    transition: -webkit-transform 0.8s;
 }
 
-#close {
-  position: absolute;
+.visibile{
+    -webkit-transform: translatey(0%);
+    -ms-transform: translatey(0%);
+    -o-transform: translatey(0%);
+    transform: translatey(0%);
 }
 
-#title {
-  color: white;
-  margin: 0;
-  padding-top: 20px;
-  text-align: center;
+.img-vr{
+    width: 100%;
+    height: auto;
+}
+
+.subfooter{
+    position: relative;
+    width: 100%;
+    height: 150px;
+    background-color: #5A82F5;
+}
+
+.subfooter img{
+    width: 100px;
+    height: auto;
+    position: absolute;
+    top: -50px;
+}
+
+.info{
+    text-align: center;
+    position: relative;
+    top: 70px;
 }
 
 .controls {
