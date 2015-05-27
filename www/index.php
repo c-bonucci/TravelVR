@@ -4,14 +4,17 @@
     <!-- Render the page for a better view on mobile phones -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 
+    <link rel="shortcut icon" href="favicon.ico" />
+
     <link rel="stylesheet" href="style.css">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
     <!-- Google Maps API & Places -->
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&&libraries=places"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
-
+    
+    <title>TravelVR</title>
   </head>
 
 
@@ -91,6 +94,10 @@ $con->close();
       // Geolocation button positioning
       var loc = document.getElementById('geoloc');
       map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(loc);
+      
+      //Insert a new image
+      var loc = document.getElementById('addImg');
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(loc);
 
       // SearchBox variable declaration
       var searchBox = new google.maps.places.SearchBox(input);
@@ -117,7 +124,7 @@ $con->close();
         map.fitBounds(bounds);
       });
 
-      //Click event on the map. Put a new marker (da mettere in pagina upload)
+      //Click event on the map. Closes the info footer
       google.maps.event.addListener(map, 'click', function(event) {
         //placeMarker(event.latLng);
         $("#footer").removeClass("visibile");
@@ -130,8 +137,8 @@ $con->close();
           $("#footer").addClass("visibile");
           document.getElementById("titolo").innerHTML = m.titolo;
           document.getElementById("tipologia").innerHTML = m.tipologia;
-          document.getElementById("img-vr").src="../VR/img/" + m.img;
-          document.getElementById("link").href="../VR/vr2.php?id=" + m.id;
+          document.getElementById("img-vr").src="VR/img/" + m.img;
+          document.getElementById("link").href="VR/vr.php?id=" + m.id;
           /*map.setZoom(8);
           map.setCenter(m.getPosition());*/
         });
@@ -149,9 +156,13 @@ $con->close();
     function UserPosition() {
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-          var initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-          map.setCenter(initialLocation);
-          map.setZoom(15);
+          var userLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+          map.setCenter(userLocation);
+          var m = new google.maps.Marker({
+            position: userLocation,
+            map: map,
+          });
+          map.setZoom(13);
         }, function() {
           alert("Questa app desidera utilizzare il GPS per rilevare la posizione. Abilitare la posizione fucking man");
         });
@@ -167,12 +178,15 @@ $con->close();
     <div id="map-canvas"></div>
     <!-- Geolocalization button -->
     <a id="geoloc" onclick="UserPosition()" class="btn-floating btn-large waves-effect waves-light indigo accent-3 z-depth-5"><i class="mdi-device-gps-fixed"></i></a>
+    <!-- Insert button -->
+    <a id="addImg" class="btn-floating btn-large waves-effect waves-light red z-depth-5" href="upload.php"><i class="mdi-content-add"></i></a>
+    
     <!-- Info footer that appears clicking on map's markers -->
     <footer id="footer">
       <div class="subfooter">
         <img src="normal-marker.png">
         <div class="info">
-          <h4 id="titolo"></h4>
+          <h3 id="titolo"></h3>
           <p id="tipologia"></p>
         </div>    
       </div>
