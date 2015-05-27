@@ -11,5 +11,6 @@ The idea is to have a map on the background where to put markers for user's phot
 
 For now you can give it a try just opening the link above with your smarthphone
 
-http://www.travelvr.me/
+http://www.travelvr.me
+
 Hope you'll enjoy it
