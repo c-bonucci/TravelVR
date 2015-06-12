@@ -1,0 +1,77 @@
+<html>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <body style="background-color: #58C0FF; overflow:hidden;">
+    <center>
+      <img id="earth" src="logos/Globespin.gif" style="width:250px; height:250px; border-radius:125px;">
+      <img id="card" src="logos/Google%20Cardboard.png">
+      <h1 id="title">TRAVEL VR</h1>
+    </center>
+    <h4 id="author">by Claudio Bonucci</h4>
+  </body>
+  <script>
+    window.setTimeout(function() {
+      window.location.href = 'index.php';
+    }, 8700);
+    setTimeout(function(){
+      document.getElementById('card').className = 'visible';
+    }, 6700);
+    setTimeout(function(){
+      document.getElementById('title').className = 'easeIN';
+    }, 7200);
+    setTimeout(function(){
+      document.getElementById('author').className = 'easeIN';
+    }, 7400);
+  </script>
+  <style>
+    #earth {
+      margin-top: 20%
+    }
+    #card {
+      width:200px; 
+      height:200px; 
+      position:absolute;
+      float:left;
+      margin-top: 20%;
+      
+      -webkit-transform: translatex(50%);
+      -ms-transform: translatex(50%); 
+      -o-transform: translatex(50%);
+      transform: translatex(50%);
+      transition: -webkit-transform 1.5s;
+    }
+
+    #card.visible {
+      -webkit-transform: translatex(-110%);
+      -ms-transform: translatex(-110%);
+      -o-transform: translatex(-110%);
+      transform: translatex(-110%);
+    }
+
+    #title {
+      font-family: 'Lobster', cursive;
+      font-size: 52;
+      color: darkblue;
+      /*-webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: black;*/
+      opacity:0;
+      transition:opacity 1500ms;
+    }
+
+    #title.easeIN {
+      opacity: 1;
+    }
+
+    #author {
+      opacity:0;
+      transition:opacity 1500ms;
+      color:red;
+      text-align: right;
+    }
+    #author.easeIN {
+      opacity:1
+    }
+
+  </style>
+</html>

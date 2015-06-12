@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
+
     <!-- Render the page for a better view on mobile phones -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 
     <link rel="shortcut icon" href="favicon.ico" />
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
     <!-- Google Maps API & Places -->
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&&libraries=places"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
-    
+
     <title>TravelVR</title>
   </head>
 
@@ -28,16 +30,17 @@
 
       //Marker icon 
       var image = {
-        url: 'cardboard-marker.png',
+        url: 'logos/cardboard-marker.png',
         size: new google.maps.Size(50, 50),
         origin: new google.maps.Point(0,0),
         anchor: new google.maps.Point(25, 25)
       };
-      //parte da modificare con php
+      // Marker's array
       var marker = [];
 
       var m;
-
+      
+      //This function puts a marker on the given location with icon properties
       function placeMarker(location) {
         if (m) {
           m.setPosition(location);
@@ -49,8 +52,9 @@
           });
         }
       }
+      //php part that loads all markerson the map from the db
       <?php
-
+// DB connection
 $con= new mysqli("localhost","root","oculus","TravelVR");
 // Check connection
 if ($con->connect_error)
@@ -59,12 +63,13 @@ if ($con->connect_error)
 }
 else
 {
-
-  $res = $con->prepare("SELECT id, titolo,tipologia, latitude, longitude, img 
+  //Query
+  $res = $con->prepare("SELECT id, titolo,tipologia,descrizione, latitude, longitude, img 
                         FROM Immagini ");
   $res->execute();
-  $res->bind_result($id,$titolo,$tipologia, $latitude, $longitude, $img);
-
+  //Binds all the query results with this variables (caution with the order!)
+  $res->bind_result($id,$titolo,$tipologia,$descrizione, $latitude, $longitude, $img);
+  
   while ($res->fetch()){
     echo "marker.push(new google.maps.Marker({
         position:new google.maps.LatLng(" . $latitude . "," . $longitude . "),
@@ -72,8 +77,9 @@ else
         icon : image,
         id : ". $id .",
         titolo :'".$titolo."',
-        img : '" . $img . "',
         tipologia: '" .$tipologia ."',
+        descrizione: '" . $descrizione ."',
+        img : '" . $img . "',
       }));";
   }
 }
@@ -87,17 +93,20 @@ $con->close();
       map.fitBounds(defaultBounds);
 
       // Places SearchBox positioning
-      var input = /** @type {HTMLInputElement} */(
-        document.getElementById('pac-input'));
+      var input = document.getElementById('pac-input');
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
       // Geolocation button positioning
       var loc = document.getElementById('geoloc');
       map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(loc);
-      
+
       //Insert a new image
-      var loc = document.getElementById('addImg');
-      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(loc);
+      var add = document.getElementById('addImg');
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(add);
+
+      var auth = document.getElementById('author');
+      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(auth);
+
 
       // SearchBox variable declaration
       var searchBox = new google.maps.places.SearchBox(input);
@@ -124,27 +133,29 @@ $con->close();
         map.fitBounds(bounds);
       });
 
-      //Click event on the map. Closes the info footer
+      //Click event on the map. Closes the info footer and remove SearchBox focus
       google.maps.event.addListener(map, 'click', function(event) {
-        //placeMarker(event.latLng);
         $("#footer").removeClass("visibile");
-
+        $("#pac-input").blur();
       });
 
       //Click event on markers
       marker.forEach(function(m){
         google.maps.event.addListener(m, 'click', function(event) {
+          //Open the footer to display features
           $("#footer").addClass("visibile");
+          //Building the footer with marker's options
           document.getElementById("titolo").innerHTML = m.titolo;
           document.getElementById("tipologia").innerHTML = m.tipologia;
           document.getElementById("img-vr").src="VR/img/" + m.img;
           document.getElementById("link").href="VR/vr.php?id=" + m.id;
-          /*map.setZoom(8);
-          map.setCenter(m.getPosition());*/
+          document.getElementById("desc").innerHTML = m.descrizione;
+
+          map.setCenter(new google.maps.LatLng(m.getPosition().lat()-0.7,m.getPosition().lng()));
         });
       })
 
-
+      //Bounds Changed event... when navigating the map
       google.maps.event.addListener(map, 'bounds_changed', function() {
         var bounds = map.getBounds();
         searchBox.setBounds(bounds);
@@ -162,35 +173,53 @@ $con->close();
             position: userLocation,
             map: map,
           });
-          map.setZoom(13);
+          map.setZoom(11);
         }, function() {
           alert("Questa app desidera utilizzare il GPS per rilevare la posizione. Abilitare la posizione fucking man");
         });
       }
     }
+    
+    //on window's load calling inizialize()
     google.maps.event.addDomListener(window, 'load', initialize);
   </script>
 
   <body>
     <!-- Places SearchBox  -->
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <input id="pac-input" class="controls" type="text" placeholder="Ricerca">
+    <!-- Author link -->
+    <!--<a href="#openModal"><img class="z-depth-5" id="author" src="logos/bonu_small.jpg"></a>-->
+    <a id="author" class="btn-floating btn-medium waves-effect waves-light modal-trigger z-depth-5" href="#modal1"><img class="z-depth-5" src="logos/bonu_small.jpg" onclick="$('#modal1').openModal();"></a>
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <center>
+          <div style="margin-left:auto; margin-right:auto;">
+            <h4 style="color:black;">Claudio Bonucci</h4>
+            <img src="logos/bonu.jpg" style="width:200px; height:200px; border-radius: 100px;">
+            <h6 style="color:black;">Quest webapp è stata realizzata come progetto finale per il mio esame di Stato <br><br> claudio.bonucci96@gmail.com</h6>
+          </div>
+        </center>
+      </div>
+    </div>
     <!-- Map -->
     <div id="map-canvas"></div>
     <!-- Geolocalization button -->
     <a id="geoloc" onclick="UserPosition()" class="btn-floating btn-large waves-effect waves-light indigo accent-3 z-depth-5"><i class="mdi-device-gps-fixed"></i></a>
     <!-- Insert button -->
-    <a id="addImg" class="btn-floating btn-large waves-effect waves-light red z-depth-5" href="upload.php"><i class="mdi-content-add"></i></a>
-    
+    <a id="addImg" class="btn-floating btn-large waves-effect waves-light red z-depth-5" href="upload/uploadForm.html"><i class="mdi-content-add"></i></a>
     <!-- Info footer that appears clicking on map's markers -->
     <footer id="footer">
       <div class="subfooter">
-        <img src="normal-marker.png">
+        <img src="logos/normal-marker.png">
         <div class="info">
-          <h3 id="titolo"></h3>
+          <h4 id="titolo"></h4>
           <p id="tipologia"></p>
         </div>    
       </div>
-      <a id="link"><img id="img-vr" class="img-vr"></a>
+      <div id="palo">
+        <a id="link"><img id="img-vr" class="img-vr"></a>
+        <p id="desc" style="color:black;"></p>
+      </div>
     </footer>
 
   </body>
