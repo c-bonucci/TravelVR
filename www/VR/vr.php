@@ -49,7 +49,7 @@ if(isset($_GET['id']))
   ?> 
   <body onclick="load()">
     <div class = "container" id ="container">
-     <!-- Left div where i'll load the image -->
+      <!-- Left div where i'll load the image -->
       <div class="meta" id="spheresx" style="background: blue;"></div>
       <!-- Right div where i'll load the image -->
       <div class="meta" id="spheredx" style="background: yellow;"></div>
@@ -60,7 +60,7 @@ if(isset($_GET['id']))
     </div>
   </body>
 
-  
+
   <script>
     //Function fullscreen for various environment
     var Fullscreen = {
@@ -127,7 +127,7 @@ if(isset($_GET['id']))
       //Add the sphere to the scene
       scene.add(sphere);
 
-      //The 
+      //Add DeviceOrientation to the camera 
       var controls = new THREE.DeviceOrientationControls(camera);
       controls.noPan = true;
       controls.noZoom = true; 

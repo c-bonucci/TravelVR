@@ -39,7 +39,7 @@
       var marker = [];
 
       var m;
-      
+
       //This function puts a marker on the given location with icon properties
       function placeMarker(location) {
         if (m) {
@@ -69,7 +69,7 @@ else
   $res->execute();
   //Binds all the query results with this variables (caution with the order!)
   $res->bind_result($id,$titolo,$tipologia,$descrizione, $latitude, $longitude, $img);
-  
+
   while ($res->fetch()){
     echo "marker.push(new google.maps.Marker({
         position:new google.maps.LatLng(" . $latitude . "," . $longitude . "),
@@ -151,7 +151,6 @@ $con->close();
           document.getElementById("link").href="VR/vr.php?id=" + m.id;
           document.getElementById("desc").innerHTML = m.descrizione;
 
-          map.setCenter(new google.maps.LatLng(m.getPosition().lat()-0.7,m.getPosition().lng()));
         });
       })
 
@@ -160,6 +159,8 @@ $con->close();
         var bounds = map.getBounds();
         searchBox.setBounds(bounds);
       });
+      
+      
     }
 
 
@@ -167,7 +168,8 @@ $con->close();
     function UserPosition() {
       if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-          var userLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+          var userLocation = new google.maps.LatLng(
+              position.coords.latitude,position.coords.longitude);
           map.setCenter(userLocation);
           var m = new google.maps.Marker({
             position: userLocation,
@@ -175,11 +177,12 @@ $con->close();
           });
           map.setZoom(11);
         }, function() {
-          alert("Questa app desidera utilizzare il GPS per rilevare la posizione. Abilitare la posizione fucking man");
+          alert("TravelVR desidera utilizzare il GPS per rilevare la posizione. " + 
+                "Abilitare il servizio di localizzazione e ricaricare la pagina!");
         });
       }
     }
-    
+
     //on window's load calling inizialize()
     google.maps.event.addDomListener(window, 'load', initialize);
   </script>
